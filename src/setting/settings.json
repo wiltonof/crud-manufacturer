@@ -1,0 +1,23 @@
+{
+  "projectName": "CRUD Manufactorer",
+  "version": "0.0.1",
+  "dev": {
+    "database": {
+      "dialect": "mysql",
+      "storage": ""
+    },
+    "server": {
+      "port": 3000,
+      "jwtSecret": "random-secret-password",
+      "jwtExpiration": "1h",
+      "host": "0.0.0.0",
+      "routePrefix": "/api",
+      "plugins": [
+        "swagger"
+      ],
+      "uploadPath": "/public/img/",
+      "hostSwagger": "127.0.0.1:3000",
+      "scheme": "http"
+    }
+  }
+}
