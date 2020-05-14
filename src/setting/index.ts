@@ -29,6 +29,7 @@ export interface IServerSettings {
 export interface IDatabaseSetting {
     dialect: string;
     storage: string;
+    forceSync: boolean;
 }
 
 export function getSettings(env?: string): IEnvironment {

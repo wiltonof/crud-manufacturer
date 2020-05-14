@@ -4,7 +4,8 @@
   "dev": {
     "database": {
       "dialect": "mysql",
-      "storage": ""
+      "storage": "",
+      "forceSync": true
     },
     "server": {
       "port": 3000,
