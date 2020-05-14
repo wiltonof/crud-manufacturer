@@ -31,7 +31,7 @@
     "fs": "0.0.1-security",
     "nconf": "0.9.1",
     "dotenv": "^8.1.0",
-    "sequelize": "4.27.0",
+    "sequelize": "5.21.9",
     "sequelize-typescript": "0.6.1",
     "sqlite3": "^4.2.0"
   },
