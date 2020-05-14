@@ -27,13 +27,16 @@
   },
   "homepage": "https://github.com/wiltonof/crud-manufacturer#readme",
   "dependencies": {
-    "hapi": "17.6.0",
-    "fs": "0.0.1-security",
-    "nconf": "0.9.1",
     "dotenv": "^8.1.0",
+    "fs": "0.0.1-security",
+    "hapi": "17.6.0",
+    "hapi-swagger": "9.1.2",
+    "inert": "5.1.0",
+    "nconf": "0.9.1",
     "sequelize": "4.27.0",
     "sequelize-typescript": "0.6.1",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^4.2.0",
+    "vision": "5.4.0"
   },
   "devDependencies": {
     "@types/node": "8.0.57",
