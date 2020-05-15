@@ -40,7 +40,7 @@
         "radix": true,
         "semicolon": [
             true,
-            "always"
+            "always", "ignore-interfaces", "ignore-bound-class-methods"
         ],
         "triple-equals": [
             true,
@@ -53,6 +53,9 @@
             "check-decl",
             "check-operator",
             "check-separator"
+        ],
+        "exclude": [
+            "node_modules/*"
         ]
     }
 }

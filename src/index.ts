@@ -8,3 +8,9 @@ import * as Dotenv from "dotenv";
 Dotenv.config();
 
 new Server();
+
+process.on('unhandledRejection', (err) => {
+
+    console.log(err);
+    process.exit(1);
+});

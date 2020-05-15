@@ -3,8 +3,48 @@
   "version": "0.0.1",
   "dev": {
     "database": {
-      "dialect": "mysql",
-      "storage": "",
+      "dialect": "sqlite",
+      "storage": "src/dao/database.sqlite",
+      "forceSync": true
+    },
+    "server": {
+      "port": 3000,
+      "jwtSecret": "random-secret-password",
+      "jwtExpiration": "1h",
+      "host": "127.0.0.1",
+      "routePrefix": "/api",
+      "plugins": [
+        "swagger"
+      ],
+      "uploadPath": "/public/img/",
+      "hostSwagger": "127.0.0.1:3000",
+      "scheme": "http"
+    }
+  },
+  "prod": {
+    "database": {
+      "dialect": "sqlite",
+      "storage": "src/dao/database.sqlite",
+      "forceSync": true
+    },
+    "server": {
+      "port": 3000,
+      "jwtSecret": "random-secret-password",
+      "jwtExpiration": "1h",
+      "host": "0.0.0.0",
+      "routePrefix": "/api",
+      "plugins": [
+        "swagger"
+      ],
+      "uploadPath": "/public/img/",
+      "hostSwagger": "127.0.0.1:3000",
+      "scheme": "http"
+    }
+  },
+  "test": {
+    "database": {
+      "dialect": "sqlite",
+      "storage": "src/dao/database.sqlite",
       "forceSync": true
     },
     "server": {
