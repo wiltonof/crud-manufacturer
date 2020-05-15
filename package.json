@@ -29,8 +29,6 @@
   "dependencies": {
     "@hapi/good-squeeze": "^6.0.0",
     "@hapi/hapi": "^19.1.1",
-    "inert": "5.1.0",
-    "vision": "^5.4.4",
     "@types/bluebird": "^3.5.31",
     "@types/validator": "^13.0.0",
     "blipp": "^4.0.1",
@@ -40,12 +38,14 @@
     "good-console": "^8.0.0",
     "hapi-cors": "^1.0.3",
     "hapi-swagger": "9.1.2",
+    "inert": "5.1.0",
     "joi": "^14.3.1",
     "nconf": "^0.10.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.9",
     "sequelize-typescript": "^1.1.0",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^4.2.0",
+    "vision": "^5.4.4"
   },
   "devDependencies": {
     "@types/node": "^14.0.1",
@@ -56,6 +56,6 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
     "gulp-uglifycss": "^1.1.0",
-    "typescript": "^2.8.3"
+    "typescript": "^3.9.2"
   }
 }

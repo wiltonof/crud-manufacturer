@@ -23,7 +23,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
             tags: ['api', "manufacturer"], // ADD THIS TAG
             description: 'Criar cadastro de fabricante',
             validate: {
-                headers: ManufacturerValidator.autorization,
+//                headers: ManufacturerValidator.autorization,
                 payload: ManufacturerValidator.manufacturer
             },
             plugins: {

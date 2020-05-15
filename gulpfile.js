@@ -12,4 +12,8 @@ function config() {
     return gulp.src('src/setting/*.json').pipe(gulp.dest('./build/setting/'));
 }
 
-exports.default = series(transformacaoTS, config);
+function database() {
+    return gulp.src('src/dao/database.sqlite').pipe(gulp.dest('./build/dao/'));
+}
+
+exports.default = series(transformacaoTS, config, database);

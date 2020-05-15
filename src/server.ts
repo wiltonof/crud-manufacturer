@@ -34,10 +34,10 @@ export class Server {
             host: settings.getSettings(process.env.NODE_ENV).server.host,
             port: settings.getSettings(process.env.NODE_ENV).server.port
         });
-  /*      if (settings.getDatabase(process.env.NODE_ENV).forceSync) {
+        if (settings.getDatabase(process.env.NODE_ENV).forceSync) {
             let seeds = [];
             await sequelize.sync({force: settings.getDatabase(process.env.NODE_ENV).forceSync}).then(() => {
-                fs.readdirSync(path.resolve(`${appDir}/dao/seeds`)).forEach(function (file) {
+               /* fs.readdirSync(path.resolve(`${appDir}/dao/seeds`)).forEach(function (file) {
                     if (path.extname(file) === ".js") {
                         let ff = file.replace('.js', '');
                         let seed = require(`${appDir}/dao/seeds/${ff}`);
@@ -45,12 +45,12 @@ export class Server {
                             seeds.push(seed);
                         }
                     }
-                });
+                });*/
             });
             for (let seed of seeds) {
                 await seed.seedValue();
             }
-        }*/
+        }
 
         /**
          * Registering plugins
