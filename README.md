@@ -80,3 +80,15 @@ License
 ----
 
 MIT
+
+
+**Free Software!**
+
+[//]: #
+
+   [wof]: <https://github.com/wiltonof>
+   [node.js]: <http://nodejs.org>
+   [hapi]: <https://hapi.dev/api/>
+   [Gulp]: <http://gulpjs.com>
+   [sequelize]: <https://sequelize.org/>
+   [sqlite3]: <https://www.sqlite.org/version3.html>
