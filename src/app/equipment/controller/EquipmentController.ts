@@ -8,25 +8,56 @@ import {Sequelize} from "sequelize";
 import {GenericController, IGenericController} from "../../../common/controller/GenericController";
 import {Equipment} from "../model/Equipment";
 import {EquipmentData} from "../data/EquipmentData";
-import {ManufacturerController} from "../../manufacturer/controller/ManufacturerController";
+import {ValidateFileTypePNGError} from "../../../common/error/ValidateFileTypePNGError";
+import {ValidateFileTypePDFError} from "../../../common/error/ValidateFileTypePDFError";
+
 
 export class EquipmentController extends GenericController<Equipment> implements IEquipmentController {
     private static equipmentController: EquipmentController = null;
     private equipmentData: EquipmentData;
-    private manufacturerController: ManufacturerController;
 
-    private constructor(protected  configs: IServerSettings, protected database: Sequelize) {
-        super(configs, database, EquipmentData.getInstance(configs, database));
-        this.equipmentData = EquipmentData.getInstance(configs, database);
-        this.manufacturerController = ManufacturerController.getInstance(configs, database);
+
+    private constructor(protected server: Hapi.server, protected  configs: IServerSettings, protected database: Sequelize) {
+        super(server, configs, database, EquipmentData.getInstance(server, configs, database));
+        this.equipmentData = EquipmentData.getInstance(server, configs, database);
     }
 
-    public static getInstance(configs: IServerSettings, database: Sequelize) {
+    public static getInstance(server: Hapi.server, configs: IServerSettings, database: Sequelize) {
         if (this.equipmentController == null) {
-            this.equipmentController = new EquipmentController(configs, database);
+            this.equipmentController = new EquipmentController(server, configs, database);
         }
         return this.equipmentController;
     }
 
+    public async create(equipment: Equipment) {
+        if (!equipment.image.includes('image/png')) {
+            throw new ValidateFileTypePNGError('ValidateFileTypePNGError');
+        }
+
+        if (!equipment.notaFiscal.includes('pdf')) {
+            throw new ValidateFileTypePDFError('ValidateFileTypePDFError');
+        }
+
+        return await this.equipmentData.create(equipment);
+    }
+
+    public async findById(id: number, attributes: string[]) {
+        return this.equipmentData.findById(id);
+    }
+
+    public async list(attributes: string[]) {
+        return this.equipmentData.list(['id', 'model', 'type', 'ppm', 'wifi', 'consumption', 'image', 'notaFiscal', 'manufacturerId']);
+    }
+
+    public async findByManufecturerId(manufacturerId: number) {
+        return await this.equipmentData.findByManufecturerId(manufacturerId);
+    }
+
+    async deleteByManufecturerId(manufacturerId: number) {
+        return await this.equipmentData.deleteByManufecturerId(manufacturerId);
+    }
 }
-export interface IEquipmentController extends IGenericController<Equipment> {}
+export interface IEquipmentController extends IGenericController<Equipment> {
+    findByManufecturerId(manufacturerId: number);
+    deleteByManufecturerId(id: number);
+}

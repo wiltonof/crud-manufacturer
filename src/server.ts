@@ -12,6 +12,10 @@ import * as path from 'path';
 
 import {Swagger} from './plugins/swagger';
 
+import {Auth} from './plugins/auth';
+
+import {Logger} from './plugins/logger';
+
 
 var appDir = path.dirname(require.main.filename);
 
@@ -58,6 +62,11 @@ export class Server {
         const swagger = new Swagger();
         await swagger.register(server,  settings.getServerInfo(process.env.NODE_ENV));
 
+        const auth = new Auth(settings.getServerInfo(process.env.NODE_ENV));
+        await auth.register(server);
+
+        const logger = new Logger();
+        await logger.register(server);
 
         /**
          * Modules

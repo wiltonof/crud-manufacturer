@@ -2,7 +2,8 @@
  *  * Created by Wilton O. Ferreira on 14/05/2020
  */
 
-import {Sequelize} from "sequelize";
+import * as Hapi from '@hapi/hapi';
+import {Sequelize, UniqueConstraintError} from "sequelize";
 import {AbstractModel} from "../model/AbstractModel";
 import {IServerSettings} from "../../setting";
 import {CreateError} from "../error/CreateError";
@@ -10,11 +11,13 @@ import {DeleteError} from "../error/DeleteError";
 import {UpdateError} from "../error/UpdateError";
 import {FindError} from "../error/FindError";
 import {ListError} from "../error/ListError";
+import {CreateUniqueConstraintError} from "../error/CreateUniqueConstraintError";
 
 
 export abstract class GenericData<T extends AbstractModel<T>> implements IGenericData {
 
     constructor(
+        protected server: Hapi.server,
         protected  configs: IServerSettings,
         protected database: Sequelize,
         protected entity: string
@@ -24,7 +27,14 @@ export abstract class GenericData<T extends AbstractModel<T>> implements IGeneri
         try {
             return await this.database.models[this.entity].create(JSON.parse(JSON.stringify(obj)));
         } catch (e) {
-            throw new CreateError(e);
+            console.log(e);
+            if (e  instanceof UniqueConstraintError || e.name === 'SequelizeUniqueConstraintError') {
+                this.server.log(['error'], {error: `[${this.entity}]:create:UniqueConstraintError:: ${e.toString()}`});
+                throw new CreateUniqueConstraintError('UniqueConstraintError');
+            } else {
+                this.server.log(['error'], {error: `[${this.entity}]:create:CreateError:: ${e.toString()}`});
+                throw new CreateError('CreateError');
+            }
         }
     }
 
@@ -32,6 +42,7 @@ export abstract class GenericData<T extends AbstractModel<T>> implements IGeneri
         try {
             return await this.database.models[this.entity].destroy({where:{ id: id}});
         } catch (e) {
+            this.server.log(['error'], {error: `[${this.entity}]:create:DeleteError:: ${e.toString()}`});
             throw new DeleteError(e);
         }
     }
@@ -40,6 +51,7 @@ export abstract class GenericData<T extends AbstractModel<T>> implements IGeneri
         try {
             return await this.database.models[this.entity].update(JSON.parse(JSON.stringify(obj)), {where:{ id: id}});
         } catch (e) {
+            this.server.log(['error'], {error: `[${this.entity}]:create:UpdateError:: ${e.toString()}`});
             throw new UpdateError(e);
         }
     }
@@ -52,6 +64,7 @@ export abstract class GenericData<T extends AbstractModel<T>> implements IGeneri
                 return await this.database.models[this.entity].findOne({where:{ id: id}, order: [['id', 'asc']]});
             }
         } catch (e) {
+            this.server.log(['error'], {error: `[${this.entity}]:create:FindError:: ${e.toString()}`});
             throw new FindError(e);
         }
     }
@@ -85,6 +98,7 @@ export abstract class GenericData<T extends AbstractModel<T>> implements IGeneri
                 );
             }
         } catch (e) {
+            this.server.log(['error'], {error: `[${this.entity}]:create:ListError:: ${e.toString()}`});
             throw new ListError(e);
         }
     }

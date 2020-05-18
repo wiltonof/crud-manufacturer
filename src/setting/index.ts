@@ -17,11 +17,9 @@ export interface IEnvironment {
 export interface IServerSettings {
     port: number;
     plugins: Array<string>;
-    jwtSecret: string;
-    jwtExpiration: string;
+    token: string;
     host: string;
     routePrefix: string;
-    uploadPath: string;
     hostSwagger: string;
     scheme: string;
 }

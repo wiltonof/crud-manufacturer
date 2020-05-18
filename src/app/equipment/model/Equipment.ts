@@ -8,7 +8,7 @@ import {Manufacturer} from "../../manufacturer/model/Manufacturer";
 
 
 
-@Table({tableName: 'equipments', modelName: 'Equipment'})
+@Table({tableName: 'equipments', modelName: 'Equipment', paranoid: false})
 export class Equipment extends AbstractModel<Equipment> implements IManufacturer {
 
     @Column({allowNull: false, field: 'name'})
@@ -27,10 +27,10 @@ export class Equipment extends AbstractModel<Equipment> implements IManufacturer
     @Column({allowNull: false, field: 'consumption', type: DataType.DOUBLE})
     consumption: number;
 
-    @Column({allowNull: false, field: 'image', type: DataType.BLOB})
+    @Column({allowNull: false, field: 'image', type: DataType.TEXT})
     image: string;
 
-    @Column({allowNull: false, field: 'nota_fiscal', type: DataType.BLOB})
+    @Column({allowNull: false, field: 'nota_fiscal', type: DataType.TEXT})
     notaFiscal: string;
 
     @ForeignKey(() => Manufacturer)
@@ -48,8 +48,8 @@ export interface IManufacturer extends  IAbstractModel {
     ppm: number;
     wifi: boolean;
     consumption: number;
-    image: string;
-    notaFiscal: string;
+    image: Buffer | string;
+    notaFiscal: Buffer | string;
     manufacturerId: number;
     manufacturer: Manufacturer;
 }

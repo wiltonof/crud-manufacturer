@@ -8,44 +8,60 @@ import {ManufacturerValidator} from "../../manufacturer/validator/ManufacturerVa
 
 export class EquipmentValidator extends GenericValidator {
 
-    static equipment = Joi.object().keys({
-        id:  Joi.number().max(999999).required(),
+    static equipment = Joi.object({
         model:Joi.string().required(),
         type: Joi.string().required(),
-        ppm: Joi.string().required(),
+        ppm: Joi.number().max(999999).required(),
         wifi:  Joi.boolean().required(),
         consumption:  Joi.number().max(999999).required(),
-        image:  Joi.binary().encoding('base64').required(),
-        notaFiscal:  Joi.binary().encoding('base64').required(),
+        image:  Joi.string().min(20).max(2097152),
+        notaFiscal: Joi.string(),
         manufacturerId:  Joi.number().max(999999).required()
     });
 
-    static equipments = Joi.array().items(Joi.object().keys({
+    static equipments = Joi.array().items(Joi.object({
         id:  Joi.number().max(999999).required(),
         model:Joi.string().required(),
         type: Joi.string().required(),
-        ppm: Joi.string().required(),
+        ppm: Joi.number().max(999999).required(),
         wifi:  Joi.boolean().required(),
         consumption:  Joi.number().max(999999).required(),
-        image:  Joi.binary().encoding('base64').required(),
-        notaFiscal:  Joi.binary().encoding('base64').required(),
+        image:  Joi.string().dataUri(),
+        notaFiscal: Joi.string().dataUri(),
         manufacturerId:  Joi.number().max(999999).required(),
-        manufacturer: ManufacturerValidator.manufacturerFindById
-    })).allow(null);
-
-    static equipmentFindById = Joi.object().keys({
-        id:  Joi.number().max(999999).required(),
-        model:Joi.string().required(),
-        type: Joi.string().required(),
-        ppm: Joi.string().required(),
-        wifi:  Joi.boolean().required(),
-        consumption:  Joi.number().max(999999).required(),
-        image:  Joi.binary().encoding('base64').required(),
-        notaFiscal:  Joi.binary().encoding('base64').required(),
-        manufacturerId:  Joi.number().max(999999).required(),
-        manufacturer: ManufacturerValidator.manufacturerFindById,
         createAt: Joi.date(),
-        updatedAt: Joi.date()
+        updatedAt: Joi.date(),
+    }));
+
+    static equipmentFindById = Joi.object({
+        id:  Joi.number().max(999999).required(),
+        model:Joi.string().required(),
+        type: Joi.string().required(),
+        ppm: Joi.number().max(999999).required(),
+        wifi:  Joi.boolean().required(),
+        consumption:  Joi.number().max(999999).required(),
+        image:  Joi.string().min(20).max(2097152),
+        notaFiscal: Joi.string(),
+        manufacturerId:  Joi.number().max(999999).required(),
+        manufacturer: ManufacturerValidator.manufacturer,
+        createAt: Joi.date(),
+        updatedAt: Joi.date(),
     });
+
+    static equipmentByManufacturerId = Joi.array().items(Joi.object({
+        id:  Joi.number().max(999999).required(),
+        model:Joi.string().required(),
+        type: Joi.string().required(),
+        ppm: Joi.number().max(999999).required(),
+        wifi:  Joi.boolean().required(),
+        consumption:  Joi.number().max(999999).required(),
+        image:  Joi.string().min(20).max(2097152),
+        notaFiscal: Joi.string(),
+        manufacturerId:  Joi.number().max(999999).required(),
+        manufacturer: ManufacturerValidator.manufacturer,
+        createAt: Joi.date(),
+        updatedAt: Joi.date(),
+    }));
+
 
 }

@@ -11,22 +11,25 @@ import {ManufacturerValidator} from "../validator/ManufacturerValidator";
 
 export default function (server: Hapi.server, settings: IServerSettings, sequelize: Sequelize) {
 
-    const facade = new ManufacturerFacade(settings, sequelize, ManufacturerController.getInstance(settings, sequelize));
+    const facade = new ManufacturerFacade(settings, sequelize, ManufacturerController.getInstance(server, settings, sequelize));
     server.bind(facade);
 
     server.route({
         method: 'POST',
         path: '/manufacturer/create',
-        options: {
+        config: {
             handler: facade.create,
-            auth: false,
+            auth: 'simple',
             tags: ['api', "manufacturer"], // ADD THIS TAG
             description: 'Criar cadastro de fabricante',
             validate: {
-//                headers: ManufacturerValidator.autorization,
-                payload: ManufacturerValidator.manufacturer
+                headers: ManufacturerValidator.autorization,
+                payload: ManufacturerValidator.manufacturerCreate
             },
             plugins: {
+                'hapiAuthorization': {
+                    roles: ['UPDATE_ADDRESS']
+                },
                 'hapi-swagger': {
                     responses: {
                         '400': {
@@ -36,7 +39,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
                 }
             },
             response: {
-                schema: ManufacturerValidator.responsePostPutAndDelete
+                schema: ManufacturerValidator.manufacturer
             }
         }
     });
@@ -45,7 +48,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'PUT',
         path: '/manufacturer/update/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['UPDATE_ADDRESS']
@@ -74,7 +77,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'GET',
         path: '/manufacturer/find/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['VIEW_ADDRESS']
@@ -88,7 +91,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
                 }
             },
             response: {
-                schema: ManufacturerValidator.manufacturerFindById
+                schema: ManufacturerValidator.manufacturer
             },
             description: 'Localizar cadastro de fabricante por id',
             notes: 'Serviço para localizar cadastro de fabricante por id',
@@ -105,7 +108,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'GET',
         path: '/manufacturer/list',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['VIEW_ADDRESS']
@@ -136,7 +139,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'DELETE',
         path: '/manufacturer/delete/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['DELETE_ADDRESS']

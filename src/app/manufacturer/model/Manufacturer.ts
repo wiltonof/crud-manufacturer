@@ -7,13 +7,13 @@ import {AbstractModel, IAbstractModel} from '../../../common/model/AbstractModel
 
 
 
-@Table({tableName: 'manufacturers', modelName: 'Manufacturer'})
+@Table({tableName: 'manufacturers', modelName: 'Manufacturer', paranoid: false})
 export class Manufacturer extends AbstractModel<Manufacturer> implements IManufacturer {
 
     @Column({allowNull: false, field: 'name'})
     name: string;
 
-    @Column({allowNull: false, field: 'cnpj'})
+    @Column({allowNull: false, unique: true,  field: 'cnpj'})
     cnpj: string;
 }
 

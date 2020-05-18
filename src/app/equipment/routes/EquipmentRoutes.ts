@@ -10,15 +10,19 @@ import {EquipmentValidator} from "../validator/EquipmentValidator";
 
 export default function (server: Hapi.server, settings: IServerSettings, sequelize: Sequelize) {
 
-    const facade = new EquipmentFacade(settings, sequelize, EquipmentController.getInstance(settings, sequelize));
+    const facade = new EquipmentFacade(settings, sequelize, EquipmentController.getInstance(server, settings, sequelize));
     server.bind(facade);
 
     server.route({
         method: 'POST',
         path: '/equipment/create',
-        options: {
+
+        config: {
+            payload: {
+                maxBytes: 1024 * 1024 * 5,
+            },
             handler: facade.create,
-            auth: false,
+            auth: 'simple',
             tags: ['api', "equipment"], // ADD THIS TAG
             description: 'Criar cadastro de equipamento',
             validate: {
@@ -26,6 +30,9 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
                 payload: EquipmentValidator.equipment
             },
             plugins: {
+                'hapiAuthorization': {
+                    roles: ['VIEW_ADDRESS']
+                },
                 'hapi-swagger': {
                     responses: {
                         '400': {
@@ -35,8 +42,8 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
                 }
             },
             response: {
-                schema: EquipmentValidator.responsePostPutAndDelete
-            }
+                schema: EquipmentValidator.equipmentFindById
+            },
         }
     });
 
@@ -44,7 +51,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'PUT',
         path: '/equipment/update/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['UPDATE_ADDRESS']
@@ -63,7 +70,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
             validate: {
                 headers: EquipmentValidator.autorization,
                 params:  EquipmentValidator.byId,
-                payload: EquipmentValidator.equipment
+                payload: EquipmentValidator.equipmentFindById
             },
             handler: facade.update
         }
@@ -73,7 +80,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'GET',
         path: '/equipment/find/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['VIEW_ADDRESS']
@@ -102,9 +109,40 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
 
     server.route({
         method: 'GET',
+        path: '/equipment/findByManufecturerId/{id}',
+        config: {
+            auth: 'simple',
+            plugins: {
+                'hapiAuthorization': {
+                    roles: ['VIEW_ADDRESS']
+                },
+                'hapi-swagger': {
+                    responses: {
+                        '400': {
+                            'description': 'BadRequest'
+                        }
+                    }
+                }
+            },
+            response: {
+                schema: EquipmentValidator.equipmentByManufacturerId
+            },
+            description: 'Localizar cadastro de equipamento por id do fabricante',
+            notes: 'Serviço para localizar cadastro de equipamento por id do fabricante',
+            tags: ['api'], // ADD THIS TAG
+            validate: {
+                headers: EquipmentValidator.autorization,
+                params: EquipmentValidator.byId
+            },
+            handler: facade.findByManufecturerId
+        }
+    });
+
+    server.route({
+        method: 'GET',
         path: '/equipment/list',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['VIEW_ADDRESS']
@@ -135,7 +173,7 @@ export default function (server: Hapi.server, settings: IServerSettings, sequeli
         method: 'DELETE',
         path: '/equipment/delete/{id}',
         config: {
-            auth: false,
+            auth: 'simple',
             plugins: {
                 'hapiAuthorization': {
                     roles: ['DELETE_ADDRESS']

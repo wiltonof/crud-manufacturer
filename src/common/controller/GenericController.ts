@@ -2,6 +2,7 @@
  *  * Created by Wilton O. Ferreira on 14/05/2020
  */
 
+import * as Hapi from '@hapi/hapi';
 import {Sequelize} from "sequelize";
 import {IGenericData} from "../data/GenericData";
 import {AbstractModel} from "../model/AbstractModel";
@@ -10,6 +11,7 @@ import {IServerSettings} from "../../setting";
 export abstract class GenericController<T extends AbstractModel<T>> implements IGenericController<T> {
 
     constructor(
+        protected server: Hapi.server,
         protected configs: IServerSettings,
         protected database: Sequelize,
         protected data: IGenericData

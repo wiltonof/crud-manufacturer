@@ -10,7 +10,7 @@ export class UnauthorizedError extends Error implements IBaseError {
         return {
             message: this.message,
             code: 401,
-            description: 'Login ou senha invalido'
+            description: 'Token de acesso invalido'
         };
     }
 }
