@@ -43,6 +43,7 @@ Create a .env file in the root of your project and insert your key/value pairs i
 
 >NODE_ENV=test
 
+Rest API documentation http://127.0.0.1:3000/docs
 
 ### Development
 
